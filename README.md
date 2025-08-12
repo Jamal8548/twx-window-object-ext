@@ -1,52 +1,76 @@
-# twx-window-object-ext
+# **TWX Window Object Extension**
 
-ThingWorx UI extension that exposes simple services to open and close a browser window/tab from a Mashup.
-Since the `window` object is blocked in Mashup Expressions, this widget provides `OpenWindow` and `CloseWindow` services you can call from events.
+A **ThingWorx custom widget** that allows you to **open** and **close** browser windows or tabs directly from a Mashup, with full **service bindings** support.
 
-## Download
+---
 
-- **Latest release (recommended):** ## Download
+## **✨ Features**
+- **Open any URL** in a new browser window/tab from a Mashup.  
+- **Close** the opened window programmatically.  
+- **Bindable URL property** — dynamically set the URL at runtime.  
+- **Opened state tracking** — `opened` boolean property indicates if the window is currently open.  
+- **Two Mashup services**:
+  - `OpenWindow` → Opens the configured URL.
+  - `CloseWindow` → Closes the opened window.  
 
-[Download Extension ZIP](https://github.com/Jamal8548/twx-window-object-ext/raw/main/twx-window-object-ext.zip)
+---
 
-- Or direct file: [`twx-window-object-ext-1.0.0.zip`](./twx-window-object-ext-1.0.0.zip)  
-  *(If no file appears here, grab it from the Releases page.)*
+## **📦 Installation**
+1.  ## Download
+[📥 Download Extension ZIP](https://github.com/Jamal8548/twx-window-object-ext/raw/main/twx-window-object-ext.zip)
 
-## Installation
 
-In ThingWorx Composer:
-1. **Import/Export → Import → Extension**
-2. Click **Browse**, select `twx-window-object-ext-1.0.0.zip`
-3. Click **Import**, then refresh Composer
+2. In **ThingWorx Composer**:
+   - Go to **Import/Export** → **Import**.
+   - Select the `.zip` file.
+   - Click **Import**.
 
-> Do **not** unzip the file. The ZIP contains `metadata.xml` and the `/ui` folder at the root as required.
+3. The widget will now be available in the **Widgets** panel in Mashup Builder.
 
-## Uninstallation
+---
 
-Composer → **Manage → Installed Extensions** → find **TW WindowObject** → click **X**, confirm → refresh.
+## **🛠 Usage**
+1. **Add the widget**  
+   - Search for **TW WindowObject** in the widget list.  
+   - Drag it into your Mashup.  
 
-## Widget: TW WindowObject
+2. **Configure properties**  
+   - **`url`** *(STRING)* → URL to open in the new window.  
+   - **`opened`** *(BOOLEAN)* → True if the window is open (read-only).  
 
-**Properties**
-- `url` *(STRING, binding target)* – URL to open in a new window/tab  
-- `opened` *(BOOLEAN, binding source)* – `true` if the widget has an open window/tab reference
+3. **Bind services**  
+   - **Button.Clicked → WindowObject.OpenWindow** (to open the URL)  
+   - **Button.Clicked → WindowObject.CloseWindow** (to close the window)  
 
-**Services**
-- `OpenWindow` – Opens `url` in a new window/tab (`_blank`) and sets `opened = true`
-- `CloseWindow` – Closes the previously opened window/tab (if still open) and sets `opened = false`
+---
 
-**Typical usage**
-1. Bind a STRING to `url` (static or dynamic).
-2. Trigger `OpenWindow` from a button or event.
-3. Later, call `CloseWindow` to close that specific tab (works only if it was opened by this widget and the browser still allows it).
+## **🔗 Example Mashup Binding**
 
-> Note: Modern browsers restrict closing tabs not opened by the same script. This widget stores a handle to the tab it opened so `CloseWindow` works reliably in that flow.
+| **Mashup Element** | **Binding** |
+|--------------------|-------------|
+| **Open Button**    | `Clicked → WindowObject.OpenWindow` |
+| **Close Button**   | `Clicked → WindowObject.CloseWindow` |
+| **Text Field**     | `Text → WindowObject.url` *(isBindingTarget)* |
+| **Label**          | `WindowObject.opened → Text` *(isBindingSource)* |
 
-## Compatibility
+---
 
-- Tested on ThingWorx 9.x (UI extension/widget)
-- Should work on newer 9.x/10.x, subject to platform security settings and browser popup blockers
+## **📂 Development Details**
 
-## Development
+### **IDE File (`WindowObject.ide.js`)**
+- Defines widget **properties**, **services**, and **metadata**.  
+- **Correct structure** → Services are declared separately, not inside `properties`.  
 
-Source layout:
+```javascript
+'services': {
+    'OpenWindow': { 'description': 'Opens a new window with the given URL' },
+    'CloseWindow': { 'description': 'Closes the previously opened window' }
+}
+Runtime File (WindowObject.runtime.js)
+Implements service logic:
+
+OpenWindow() → Opens new window & sets opened = true.
+
+CloseWindow() → Closes window & sets opened = false.
+
+Responds to Mashup service calls via serviceInvoked(serviceName).
