@@ -1,52 +1,81 @@
-# twx-window-object-ext
+TWX Window Object Extension
+A custom ThingWorx widget that enables you to open and close browser windows or tabs directly from a Mashup.
+You can now bind to services and use properties to control window behavior programmatically.
 
-ThingWorx UI extension that exposes simple services to open and close a browser window/tab from a Mashup.
-Since the `window` object is blocked in Mashup Expressions, this widget provides `OpenWindow` and `CloseWindow` services you can call from events.
+Features
+Open any URL in a new browser window or tab from a ThingWorx Mashup.
 
-## Download
+Close the opened window programmatically.
 
-- **Latest release (recommended):** ## Download
+Bindable URL property so the link can be set dynamically.
 
-[Download Extension ZIP](https://github.com/Jamal8548/twx-window-object-ext/raw/main/twx-window-object-ext.zip)
+opened boolean property that indicates if the window is currently open.
 
-- Or direct file: [`twx-window-object-ext-1.0.0.zip`](./twx-window-object-ext-1.0.0.zip)  
-  *(If no file appears here, grab it from the Releases page.)*
+Two Mashup services:
 
-## Installation
+OpenWindow → Opens the configured URL in a new browser window/tab.
+
+CloseWindow → Closes the opened window.
+
+Works with runtime bindings (Button Click → Widget Service).
+
+Installation
+Download the ZIP file:
+📥 twx-window-object-ext.zip
 
 In ThingWorx Composer:
-1. **Import/Export → Import → Extension**
-2. Click **Browse**, select `twx-window-object-ext-1.0.0.zip`
-3. Click **Import**, then refresh Composer
 
-> Do **not** unzip the file. The ZIP contains `metadata.xml` and the `/ui` folder at the root as required.
+Go to Import/Export → Import.
 
-## Uninstallation
+Select the downloaded .zip file.
 
-Composer → **Manage → Installed Extensions** → find **TW WindowObject** → click **X**, confirm → refresh.
+Click Import.
 
-## Widget: TW WindowObject
+The widget will appear in the Widgets panel in Mashup Builder.
 
-**Properties**
-- `url` *(STRING, binding target)* – URL to open in a new window/tab  
-- `opened` *(BOOLEAN, binding source)* – `true` if the widget has an open window/tab reference
+How to Use
+Drag the Widget to Your Mashup
 
-**Services**
-- `OpenWindow` – Opens `url` in a new window/tab (`_blank`) and sets `opened = true`
-- `CloseWindow` – Closes the previously opened window/tab (if still open) and sets `opened = false`
+Search for TW WindowObject in the widget list.
 
-**Typical usage**
-1. Bind a STRING to `url` (static or dynamic).
-2. Trigger `OpenWindow` from a button or event.
-3. Later, call `CloseWindow` to close that specific tab (works only if it was opened by this widget and the browser still allows it).
+Drop it into your mashup.
 
-> Note: Modern browsers restrict closing tabs not opened by the same script. This widget stores a handle to the tab it opened so `CloseWindow` works reliably in that flow.
+Set Properties
 
-## Compatibility
+url → The URL to open.
 
-- Tested on ThingWorx 9.x (UI extension/widget)
-- Should work on newer 9.x/10.x, subject to platform security settings and browser popup blockers
+opened (read-only) → Will be true if the window is open.
 
-## Development
+Trigger Services
 
-Source layout:
+Bind Button.Clicked → WindowObject.OpenWindow to open the URL.
+
+Bind Button.Clicked → WindowObject.CloseWindow to close it.
+
+Mashup Example
+Element	Binding
+Button "Open"	Clicked → WindowObject.OpenWindow
+Button "Close"	Clicked → WindowObject.CloseWindow
+Text Field	Text → WindowObject.url (bind target)
+Label	WindowObject.opened → Text (bind source)
+
+Development Notes
+IDE File (WindowObject.ide.js)
+Defines:
+
+Widget properties (URL, opened flag)
+
+Services (OpenWindow, CloseWindow)
+
+Mashup display name and description
+
+Correct structure: services are not defined inside properties — they are declared in their own services object returned from widgetProperties().
+
+Runtime File (WindowObject.runtime.js)
+Implements:
+
+OpenWindow() → Opens a new window and sets opened = true
+
+CloseWindow() → Closes the window and sets opened = false
+
+Handles Mashup service invocations via serviceInvoked(serviceName).
