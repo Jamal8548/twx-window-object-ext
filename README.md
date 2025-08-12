@@ -17,7 +17,7 @@ A **ThingWorx custom widget** that allows you to **open** and **close** browser 
 
 ## **📦 Installation**
 1. **Download** the extension ZIP:  
-   [📥 **twx-window-object-ext.zip**](./twx-window-object-ext.zip)  
+   [📥 **twx-window-object-ext.zip**](https://github.com/Jamal8548/twx-window-object-ext/twx-window-object-ext.zip)  
 
 2. In **ThingWorx Composer**:
    - Go to **Import/Export** → **Import**.
