@@ -1,70 +1,66 @@
-TWX Window Object Extension
-A ThingWorx custom widget that allows you to open and close browser windows or tabs directly from a Mashup, with full service bindings support.
+# **TWX Window Object Extension**
 
-✨ Features
-Open any URL in a new browser window/tab from a Mashup.
+A **ThingWorx custom widget** that allows you to **open** and **close** browser windows or tabs directly from a Mashup, with full **service bindings** support.
 
-Close the opened window programmatically.
+---
 
-Bindable URL property — dynamically set the URL at runtime.
+## **✨ Features**
+- **Open any URL** in a new browser window/tab from a Mashup.  
+- **Close** the opened window programmatically.  
+- **Bindable URL property** — dynamically set the URL at runtime.  
+- **Opened state tracking** — `opened` boolean property indicates if the window is currently open.  
+- **Two Mashup services**:
+  - `OpenWindow` → Opens the configured URL.
+  - `CloseWindow` → Closes the opened window.  
 
-Opened state tracking — opened boolean property indicates if the window is currently open.
+---
 
-Two Mashup services:
+## **📦 Installation**
+1. **Download** the extension ZIP:  
+   [📥 **twx-window-object-ext.zip**](./twx-window-object-ext.zip)  
 
-OpenWindow → Opens the configured URL.
+2. In **ThingWorx Composer**:
+   - Go to **Import/Export** → **Import**.
+   - Select the `.zip` file.
+   - Click **Import**.
 
-CloseWindow → Closes the opened window.
+3. The widget will now be available in the **Widgets** panel in Mashup Builder.
 
-📦 Installation
-Download the extension ZIP:
-📥 twx-window-object-ext.zip
+---
 
-In ThingWorx Composer:
+## **🛠 Usage**
+1. **Add the widget**  
+   - Search for **TW WindowObject** in the widget list.  
+   - Drag it into your Mashup.  
 
-Go to Import/Export → Import.
+2. **Configure properties**  
+   - **`url`** *(STRING)* → URL to open in the new window.  
+   - **`opened`** *(BOOLEAN)* → True if the window is open (read-only).  
 
-Select the .zip file.
+3. **Bind services**  
+   - **Button.Clicked → WindowObject.OpenWindow** (to open the URL)  
+   - **Button.Clicked → WindowObject.CloseWindow** (to close the window)  
 
-Click Import.
+---
 
-The widget will now be available in the Widgets panel in Mashup Builder.
+## **🔗 Example Mashup Binding**
 
-🛠 Usage
-Add the widget
+| **Mashup Element** | **Binding** |
+|--------------------|-------------|
+| **Open Button**    | `Clicked → WindowObject.OpenWindow` |
+| **Close Button**   | `Clicked → WindowObject.CloseWindow` |
+| **Text Field**     | `Text → WindowObject.url` *(isBindingTarget)* |
+| **Label**          | `WindowObject.opened → Text` *(isBindingSource)* |
 
-Search for TW WindowObject in the widget list.
+---
 
-Drag it into your Mashup.
+## **📂 Development Details**
 
-Configure properties
+### **IDE File (`WindowObject.ide.js`)**
+- Defines widget **properties**, **services**, and **metadata**.  
+- **Correct structure** → Services are declared separately, not inside `properties`.  
 
-url (STRING) → URL to open in the new window.
-
-opened (BOOLEAN) → True if the window is open (read-only).
-
-Bind services
-
-Button.Clicked → WindowObject.OpenWindow (to open the URL)
-
-Button.Clicked → WindowObject.CloseWindow (to close the window)
-
-🔗 Example Mashup Binding
-Mashup Element	Binding
-Open Button	Clicked → WindowObject.OpenWindow
-Close Button	Clicked → WindowObject.CloseWindow
-Text Field	Text → WindowObject.url (isBindingTarget)
-Label	WindowObject.opened → Text (isBindingSource)
-
-📂 Development Details
-IDE File (WindowObject.ide.js)
-Defines widget properties, services, and metadata.
-
-Correct structure → Services are declared separately, not inside properties.
-
-javascript
-Copy
-Edit
+```javascript
 'services': {
     'OpenWindow': { 'description': 'Opens a new window with the given URL' },
     'CloseWindow': { 'description': 'Closes the previously opened window' }
